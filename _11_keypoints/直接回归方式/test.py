@@ -23,7 +23,7 @@ def test(opt):
     net.to(device)
     net.eval()
 
-    path = 'D:/work/files/deeplearn_datasets/choujianji/roi-keypoint/images'#"D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test/test2/ok"#
+    path = 'D:/work/files/deeplearn_datasets/choujianji/roi-keypoint/images' #"D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test/test2/ok"#
     files = [path+"/"+ f for f in os.listdir(path)]
 
     for image_path in files:
