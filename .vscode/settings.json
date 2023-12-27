@@ -1,0 +1,6 @@
+{
+    "python.terminal.executeInFileDir": true,
+    "python.analysis.extraPaths": [
+        "./2.object_detection/A单目标坐标回归测试1/data",
+    ]
+}

@@ -1,0 +1,1 @@
+代码来至https://github.com/opconty/pytorch_ctpn，做了少许更改，可以跑通。但没有预训练权重损失无法下降，预训练权重保存在阿里网盘：https://www.aliyundrive.com/s/et9i7fD3UP6

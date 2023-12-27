@@ -1,0 +1,19 @@
+进入目录：
+D:\work\program\python\DeepLearning\test_learn_python\_Lib
+python setup.py sdist bdist_wheel
+twine upload -u our1314 -p 421427llWR dist/*
+
+
+安装时使用官方源，国内源并没有及时同步：
+pip install our1314==0.1.34 -i https://pypi.Python.org/simple/
+
+当前可用halcon版本：
+pip install mvtec-halcon==20110.0.0
+
+参考：https://blog.csdn.net/yifengchaoran/article/details/113447773
+
+python使用halcon需要将下列库放到代码目录下，且dll版本与pip安装的版本要一致：
+halcon.dll
+halconc.dll
+halconcpp.dll
+hdevenginecpp.dll

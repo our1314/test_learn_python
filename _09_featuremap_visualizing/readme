@@ -1,0 +1,17 @@
+参考文章：
+https://zhuanlan.zhihu.com/p/189898699
+
+特征图可视化的方法：
+1.可视化中间特征图。
+2.可视化卷积核。
+3.可视化图像中类激活的热力图。
+
+CAM      https://www.jianshu.com/p/fd2f09dc3cc9
+GRAD-CAM https://www.jianshu.com/p/15f33f43312d
+总结：
+CAM原理：
+论文《Learning Deep Features for Discriminative Localization》发现了CNN分类模型的一个有趣的现象：
+CNN的最后一层卷积输出的特征图，对其通道进行加权叠加后，其激活值（ReLU激活后的非零值）所在的区域，即为图像中的物体所在区域。（参考 https://www.jianshu.com/p/fd2f09dc3cc9）
+
+CAM 的理解参考上面现象。
+Grad-CAM 的理解则使用对分数进行求导得到的导数作为权重，因为此类分数要降低，则对应位姿的导数应该会比较大。

@@ -1,0 +1,6 @@
+2022.12.5
+提供单目标图像数据和坐标（归一化），简单搭建回归网络即可得到较好精度的结果。
+1、网络前向传播输出目标坐标（xywh）,img→(xywh),即3dtensor→4x1
+2、损失函数为网络输出与label的均方差(mse:mean square error)
+
+技巧（trick）：网络输出使用了sigmoid，假如不使用则网络输出为nan,使用之后效果很好,且adam比sgd好.
