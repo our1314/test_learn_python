@@ -13,14 +13,16 @@ def export(opt):
     path = opt.weights
     f = path.replace('.pth', '.onnx')
 
-    input_size = (1, 3) + (224, 224)#opt.data.input_size
+    input_size = (1, 3) + opt.data.input_size
     x = torch.randn(input_size)
     checkpoint = torch.load(path)
 
-    #net = net_xray(False, opt.data.class_num)  # classify_net1()
-    net = torchvision.models.wide_resnet50_2()
+    net = net_xray(False, opt.data.class_num)  # classify_net1()
     net.load_state_dict(checkpoint['net'])
     net.eval()
+
+    # net = torchvision.models.resnet152(weights=torchvision.models.ResNet152_Weights.IMAGENET1K_V2)
+    # net.eval()
     torch.onnx.export(net,
                       x,
                       f,
@@ -56,7 +58,7 @@ def export(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--weights', default='./run/train/wide_resnet/weights/best.pth')  # 修改
+    parser.add_argument('--weights', default='./run/train/wide_resnet/weights/ResNet152_Weights.IMAGENET1K_V2.pth')  # 修改
     parser.add_argument('--data', default=data_wide_resnet, type=dict)  # 修改
 
     opt = parser.parse_args()
