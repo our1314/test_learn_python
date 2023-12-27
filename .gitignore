@@ -1135,3 +1135,5 @@ _20_proj/hdevenginecpp.dll
 _20_proj/yolov5-seg.onnx
 _20_proj/yolov8-seg.onnx
 _20_proj/yolov8-seg1.onnx
+_11_keypoints/直接回归方式/__pycache__/data_keypoints.cpython-39.pyc
+_11_keypoints/直接回归方式/__pycache__/net.cpython-39.pyc

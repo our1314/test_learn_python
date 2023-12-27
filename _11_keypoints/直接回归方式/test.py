@@ -14,22 +14,16 @@ import torchvision
 
 def test(opt):
     # 定义设备
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device("cpu")
-    loss_fn = nn.MSELoss()
-    #ppp = "d:/work/files/deeplearn_datasets/choujianji/roi-keypoint"#'D:/work/files/deeplearn_datasets/choujianji/roi-keypoint'
-    #mydata = data_keypoints(ppp)
-    # datasets_val = DataLoader(mydata, batch_size=1, shuffle=True)
-
-    net = net_resnet50()
-    path = './run_resnet50/weights/best.pth'
+    net = net_resnet18()
+    path = './run_resnet18/weights/best.pth'
     checkpoint = torch.load(path)
     net.load_state_dict(checkpoint['net'])
     print("loss:",checkpoint["loss"])
     net.to(device)
     net.eval()
 
-    path = "D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test/test2/ok"#'D:/work/files/deeplearn_datasets/choujianji/roi-keypoint/images'
+    path = 'D:/work/files/deeplearn_datasets/choujianji/roi-keypoint/images'#"D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test/test2/ok"#
     files = [path+"/"+ f for f in os.listdir(path)]
 
     for image_path in files:
