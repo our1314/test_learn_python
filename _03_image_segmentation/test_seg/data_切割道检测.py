@@ -8,7 +8,7 @@ import cv2
 from torchvision.transforms import InterpolationMode
 import numpy as np
 import torchvision.transforms.functional as F
-from our1314.work.Utils import *
+from our1314.work import *
 
 class addnoise():
     def __call__(self, x):
