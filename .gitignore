@@ -1,4 +1,8 @@
+#忽略的文件夹
 __pycache__/
+run/
+
+#忽略的文件
 *.pt
 *.pth
 *.png
@@ -6,4 +10,4 @@ __pycache__/
 *.tar
 *.dll
 *.onnx
-run/
+
