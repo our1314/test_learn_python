@@ -11,3 +11,5 @@ run/
 *.dll
 *.onnx
 
+#其它忽略方式参考yolo
+
