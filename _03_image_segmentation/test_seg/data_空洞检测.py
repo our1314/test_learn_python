@@ -68,10 +68,28 @@ class data_seg(Dataset):
 
         if self.transform2 != None:
             image = self.transform2(image)
+
+        #将label转换为one hot
+        eye_ = torch.eye(2,2,dtype=torch.float32)
+        idx = label.reshape(-1).int()
+        eye_ = eye_[idx]
+        label = eye_.reshape(label.shape[1], label.shape[2], 2)
+        label = label.permute(2,0,1)
         return image, label
 
 
 if __name__ == '__main__':
+    #a = data_seg.__dict__
+    e = np.ones((5,5))
+    print(e)
+    e1 = e[np.array([1,2,3,3,2,1,2,1,3,4,1,2,1]).reshape(-1)]
+    print(e1)
+
+    e=torch.eye(5)
+    print(e)
+    e1 = e[torch.tensor([1,2,3,3,2,1,2,1,3,4,1,2,1])]
+    print(e1)
+
     data = data_seg('D:/work/files/deeplearn_datasets/xray空洞检测/空洞检测生成数据集/train', transform1=transform1, transform2=transform2)
     data_loader = DataLoader(data, batch_size=1, shuffle=True)
     for image, label in data_loader:
@@ -87,3 +105,4 @@ if __name__ == '__main__':
         dis = cv2.hconcat([img, cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR), tmp])
         cv2.imshow("dis", dis)        
         cv2.waitKey()
+        

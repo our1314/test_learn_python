@@ -2,20 +2,21 @@ import argparse
 import os
 import torch
 from model import UNet
-from model import deeplabv3,UNet
+from model import DeepLabV3Plus,deeplabv3,UNet
 #from data_抽检机 import transform_val
-from data_切割道检测 import transform_val
+#from data_切割道检测 import transform_val
+from data_空洞检测 import data_seg, transform1, transform2, transform_val
 import cv2
 import numpy as np
 import torchvision
-from our1314.work.Utils import tensor2mat
+from our1314.work import tensor2mat
 
 
 def predict(opt):
     print(os.getcwd())
     path_weight = os.path.join(opt.out_path,opt.weights)
     checkpoint = torch.load(path_weight)
-    net = deeplabv3()
+    net = DeepLabV3Plus(n_classes=2, n_blocks=[3, 4, 23, 3], atrous_rates=[6, 12, 18], multi_grids=[1, 2, 4], output_stride=16)
     net.load_state_dict(checkpoint['net'])
     print("best loss:",checkpoint['loss'])
     net.eval()
@@ -46,9 +47,9 @@ def predict(opt):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--weights', default='best_kongdong.pth', help='指定权重文件，未指定则使用官方权重！')
+    parser.add_argument('--weights', default='best_test.pth', help='指定权重文件，未指定则使用官方权重！')
     parser.add_argument('--out_path', default='./run/train', type=str)  # 修改
-    parser.add_argument('--data_path_test', default='D:/desktop/qgd1/test')  # 修改
+    parser.add_argument('--data_path_test', default='D:/work/files/deeplearn_datasets/xray空洞检测/生成数据Power/train')  # 修改
     parser.add_argument('--conf', default=0.3, type=float)
 
     opt = parser.parse_args()

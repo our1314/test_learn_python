@@ -4,6 +4,7 @@ from torch.nn import Conv2d
 from torch.utils.data import DataLoader
 
 
+
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -23,6 +24,9 @@ def train():
 
 
 if __name__ == '__main__':
+
+    multi_grids = [1 for _ in range(10)]
+
     net = Net()  # 1、定义网络
     loss = nn.CrossEntropyLoss()  # 2、定义损失
     opt = torch.optim.Adam(net.parameters(), lr=0.01)  # 3、定义优化器
