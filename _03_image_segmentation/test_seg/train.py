@@ -22,7 +22,7 @@ def train(opt):
     dataloader_train = DataLoader(datasets_train, batch_size=opt.batch_size, shuffle=True, num_workers=8, drop_last=False)
     dataloader_val = DataLoader(datasets_val, batch_size=opt.batch_size, shuffle=True, num_workers=8, drop_last=False)
 
-    net = DeepLabV3Plus(n_classes=2,n_blocks=[3, 4, 23, 3],atrous_rates=[6, 12, 18],multi_grids=[1, 2, 4],output_stride=16) #deeplabv3()  # deeplabv3() UNet() DeepLabV3_2()
+    net = deeplabv3()#DeepLabV3Plus(n_classes=2,n_blocks=[3, 4, 23, 3],atrous_rates=[6, 12, 18],multi_grids=[1, 2, 4],output_stride=16) #deeplabv3()  # deeplabv3() UNet() DeepLabV3_2()
     net.to(device)
 
     #loss_fn = nn.BCELoss(reduction='mean')
@@ -44,12 +44,15 @@ def train(opt):
     # 加载预训练模型
     loss_best = 9999
     if os.path.exists(opt.pretrain):
-        checkpoint = torch.load(opt.pretrain)
-        net.load_state_dict(checkpoint['net'])
-        #optimizer.load_state_dict(checkpoint['optimizer'])
-        time,epoch,loss = checkpoint['time'],checkpoint['epoch'],checkpoint['loss']
-        loss_best = checkpoint['loss']
-        print(f"加载权重: {opt.pretrain}, {time}: epoch: {epoch}, best loss: {loss}")
+        try:
+            checkpoint = torch.load(opt.pretrain)
+            net.load_state_dict(checkpoint['net'])
+            #optimizer.load_state_dict(checkpoint['optimizer'])
+            time,epoch,loss = checkpoint['time'],checkpoint['epoch'],checkpoint['loss']
+            loss_best = checkpoint['loss']
+            print(f"加载权重: {opt.pretrain}, {time}: epoch: {epoch}, best loss: {loss}")
+        except:
+            print("加载权重出现异常！")
     else:
         print("未找到预训练权重文件！")
     
