@@ -11,9 +11,9 @@ IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
 class DatasetSplit(Enum):
-    TRAIN = "train"
-    VAL = "val"
-    TEST = "test"
+    TRAIN = "ok"
+    VAL = "ng"
+    TEST = "ng"
 
 class CJJDataset(torch.utils.data.Dataset):
     """
@@ -85,7 +85,7 @@ class CJJDataset(torch.utils.data.Dataset):
 
 
 if __name__ ==  "__main__":
-    data = CJJDataset('D:/work/files/deeplearn_datasets/anomalydetection/mvtec_anomaly_detection/bottle',split=DatasetSplit.TEST)
+    data = CJJDataset('D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test/test0',split=DatasetSplit.TEST)
     for d in data:
         img_st,a = d
         img_st = img_st.numpy()
@@ -95,4 +95,3 @@ if __name__ ==  "__main__":
         img_st = cv2.cvtColor(img_st, cv2.COLOR_RGB2BGR)
         cv2.imshow("dis",img_st)
         cv2.waitKey()
-        torch.utils.data.random_split()

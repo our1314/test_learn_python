@@ -14,7 +14,6 @@ import itertools
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
 from torchvision.transforms import functional as F
-from our1314.work.Utils import addWeightedMask
 
 
 def set_seeds(seed, with_torch=True, with_cuda=True):
@@ -107,7 +106,7 @@ def train(opt):
         #loss_best = checkpoint['loss']
         print(f"加载权重: {opt.pretrain}, {time}: epoch: {epoch}, loss: {loss}")
     
-    p = torch.load("D:/desktop/EfficientAD-main/models/teacher_medium.pth")
+    p = torch.load("D:/work/files/weights/torchsharp_weights/efficientad")
     teacher.pdn.load_state_dict(p)
     teacher_mean, teacher_std = teacher_normalization(teacher, dataloader_train, device=device)
 
@@ -345,7 +344,7 @@ if __name__ == '__main__':
     parser.add_argument('--weights', default='best.pth', help='指定权重文件，未指定则使用官方权重！')
 
     parser.add_argument('--resume', default=False, type=bool, help='True表示从--weights参数指定的epoch开始训练,False从0开始')
-    parser.add_argument('--data_path', default='D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test')
+    parser.add_argument('--data_path', default='D:/work/files/deeplearn_datasets/choujianji/roi-mynetseg/test/test0')
     parser.add_argument('--data_path_val', default='')
     parser.add_argument('--epoch', default=300, type=int)
     parser.add_argument('--lr', default=1e-3, type=float)
