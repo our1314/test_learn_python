@@ -14,3 +14,11 @@ run_*/
 
 #其它忽略方式参考yolo
 
+_01_image_classification/test/MNIST/raw/t10k-images-idx3-ubyte
+_01_image_classification/test/MNIST/raw/t10k-images-idx3-ubyte.gz
+_01_image_classification/test/MNIST/raw/t10k-labels-idx1-ubyte
+_01_image_classification/test/MNIST/raw/t10k-labels-idx1-ubyte.gz
+_01_image_classification/test/MNIST/raw/train-images-idx3-ubyte
+_01_image_classification/test/MNIST/raw/train-images-idx3-ubyte.gz
+_01_image_classification/test/MNIST/raw/train-labels-idx1-ubyte
+_01_image_classification/test/MNIST/raw/train-labels-idx1-ubyte.gz

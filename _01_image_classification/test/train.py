@@ -3,23 +3,29 @@ import os.path
 import pathlib
 import sys
 from datetime import datetime
+import PIL
+import PIL.Image
+import cv2
 import numpy as np
 import torch
 import torchvision.transforms
 from torch import nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from data import data_oqa_agl, data_oqa_chr, data_cleaner, data_wide_resnet
+# from data import data_oqa_agl, data_oqa_chr, data_cleaner, data_wide_resnet
     # , data_xray_sot23, data_xray_sc88, data_xray_sc70, data_xray_sc89, \
     # data_xray_sod123, data_xray_sod323, data_xray_sot23_juanpan, data_xray_sod523, data_xray_sod723, data_xray_sot25, \
     # data_xray_sot26, data_xray_sot23e, ,  data_cleaner, data_xray_allone, data_xray_maoci
 
 
-from model import net_xray, wide_resnet
+# from model import net_xray, wide_resnet
 import sys
+
+
 sys.path.append("D:/work/program/Python/DeepLearning/test_learn_python")
 from our1314 import work
 
+from model import net_xray, wide_resnet
 
 def train(opt):
     # 定义设备
@@ -27,7 +33,7 @@ def train(opt):
     # 训练轮数
     epoch_count = opt.epoch
     # 网络
-    net = net_xray(True, opt.data.class_num)  # 加载官方预训练权重
+    net = net_xray(True, 10)  # 加载官方预训练权重
 
     # 初始化网络权重
     if os.path.exists(opt.pretrain):
@@ -69,12 +75,12 @@ def train(opt):
         writer.add_graph(net, x)
 
     # 加载数据集
-    data = opt.data
-    dataloader_train = DataLoader(data.datasets_train, opt.batch_size, shuffle=True)  # 10
-    dataloader_val = DataLoader(data.datasets_val, opt.batch_size, shuffle=True)  # 4
-
-    print(f"训练集的数量：{len(data.datasets_train)}")
-    print(f"验证集的数量：{len(data.datasets_val)}")
+    data_train = torchvision.datasets.mnist.MNIST(root="./", train=True, download=True)
+    dataloader_train = DataLoader(data_train.train_data, opt.batch_size, shuffle=True)  # 10
+    # dataloader_val = DataLoader(data.test_data, opt.batch_size, shuffle=True)  # 4
+    aaa = data_train.train_data
+    # print(f"训练集的数量：{len(data.datasets_train)}")
+    # print(f"验证集的数量：{len(data.datasets_val)}")
 
     acc_best = 0 #checkpoint['acc']
     loss_best = 999 #checkpoint['loss']
@@ -85,7 +91,15 @@ def train(opt):
         net.train()
         acc_train,loss_train,acc_train_cnt = 0,0,0
 
-        for imgs, labels in dataloader_train:
+        for imgs in dataloader_train:
+            for im in imgs:
+                # PIL.Image.Show(im)
+                m1,m2 = torch.max(im),torch.min(im)
+                im = im.numpy()
+                im = cv2.resize(im,dsize=None,fx=4,fy=4, interpolation=cv2.INTER_NEAREST)
+                cv2.imshow("img",im)
+                cv2.waitKey()
+                pass
             imgs = imgs.to(device)
             labels = labels.to(device)
 
@@ -200,8 +214,6 @@ if __name__ == '__main__':
     parser.add_argument('--pretrain', default='./run/train/wide_resnet/weights/best.pth', help='指定权重文件，未指定则使用官方权重！')  # 修改
     parser.add_argument('--out_path', default='./run/train/wide_resnet', type=str)  # 修改
     parser.add_argument('--weights', default='best.pth', help='指定权重文件，未指定则使用官方权重！')
-    parser.add_argument('--data', default=data_wide_resnet)#修改
-
     parser.add_argument('--resume', default=False, type=bool, help='True表示从--weights参数指定的epoch开始训练,False从0开始')
     parser.add_argument('--epoch', default=50, type=int)
     parser.add_argument('--lr', default=0.01, type=float)

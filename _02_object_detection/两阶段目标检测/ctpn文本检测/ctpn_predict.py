@@ -20,7 +20,7 @@ import config
 prob_thresh = 0.1
 width = 612
 device = torch.device('cpu')
-weights = os.path.join(config.checkpoints_dir, 'best.dict')
+weights = os.path.join(config.checkpoints_dir, 'best1.dict')
 img_path = 'D:/work/files/deeplearn_datasets/OQA/det/train/1AM3_2023-03-09_18.03.52-356_src.png'
 
 # cc = torch.load('checkpoints/ctpn_ep04_0.0429_0.2026_0.2455.pth.tar')
