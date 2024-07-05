@@ -11,13 +11,15 @@ import numpy as np
 import cv2
 from torch.utils.data import Dataset
 import torch
-from config import IMAGE_MEAN
+# from ..config import IMAGE_MEAN
 from ctpn_utils import cal_rpn
+
+IMAGE_MEAN = [123.68, 116.779, 103.939]
 
 
 def readxml(path):
     gtboxes = []
-    imgfile = ''
+    imgfile = ""
     xml = ET.parse(path)
     for elem in xml.iter():
         if 'filename' in elem.tag:
@@ -88,5 +90,13 @@ class VOCDataset(Dataset):
         cls = torch.from_numpy(cls).float()
         regr = torch.from_numpy(regr).float()
 
+        #print(regr)
         return m_img, cls, regr
 
+
+if __name__ == "__main__":
+    import config
+    voc = VOCDataset(config.img_dir,config.img_dir)
+    a = voc[0]
+    pass
+    

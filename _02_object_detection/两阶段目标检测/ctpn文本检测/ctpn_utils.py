@@ -1,9 +1,9 @@
-# -*- coding:utf-8 -*-
-# '''
+#-*- coding:utf-8 -*-
+#'''
 # Created on 18-12-11 上午10:05
 #
 # @Author: Greg Gao(laygin)
-# '''
+#'''
 import numpy as np
 import cv2
 from config import *
@@ -73,8 +73,7 @@ def gen_anchor(featuresize, scale):
     for i in shift_y:
         for j in shift_x:
             anchor.append(base_anchor + [j, i, j, i])
-    all_anchor = np.array(anchor).reshape((-1, 4))
-    return all_anchor
+    return np.array(anchor).reshape((-1, 4))
 
 
 def cal_iou(box1, box1_area, boxes2, boxes2_area):
@@ -132,20 +131,20 @@ def bbox_transfor_inv(anchor, regr):
         return predict bbox
     """
 
-    Cya = (anchor[:, 1] + anchor[:, 3]) * 0.5  # anchor中心的y坐标
-    ha = anchor[:, 3] - anchor[:, 1] + 1  # anchor的高度
+    Cya = (anchor[:, 1] + anchor[:, 3]) * 0.5
+    ha = anchor[:, 3] - anchor[:, 1] + 1
 
     Vcx = regr[0, :, 0]
     Vhx = regr[0, :, 1]
 
-    Cyx = Vcx * ha + Cya  # 目标的中心的y坐标
-    hx = np.exp(Vhx) * ha  # 目标的高度
+    Cyx = Vcx * ha + Cya
+    hx = np.exp(Vhx) * ha
     xt = (anchor[:, 0] + anchor[:, 2]) * 0.5
 
-    x1 = xt - 16 * 0.5  # x1坐标为当前anchor的中心坐标-16/2
-    y1 = Cyx - hx * 0.5  # y1坐标为regr的第一列-hx/2
-    x2 = xt + 16 * 0.5  # x2坐标为当前anchor的中心坐标+16/2
-    y2 = Cyx + hx * 0.5  # y2坐标为regr的第一列+hx/2
+    x1 = xt - 16 * 0.5
+    y1 = Cyx - hx * 0.5
+    x2 = xt + 16 * 0.5
+    y2 = Cyx + hx * 0.5
     bbox = np.vstack((x1, y1, x2, y2)).transpose()
 
     return bbox
@@ -336,7 +335,7 @@ class TextProposalGraphBuilder:
             return min(h1, h2) / max(h1, h2)
 
         return overlaps_v(index1, index2) >= TextLineCfg.MIN_V_OVERLAPS and \
-            size_similarity(index1, index2) >= TextLineCfg.MIN_SIZE_SIM
+               size_similarity(index1, index2) >= TextLineCfg.MIN_SIZE_SIM
 
     def build_graph(self, text_proposals, scores, im_size):
         self.text_proposals = text_proposals
@@ -349,7 +348,7 @@ class TextProposalGraphBuilder:
             boxes_table[int(box[0])].append(index)
         self.boxes_table = boxes_table
 
-        graph = np.zeros((text_proposals.shape[0], text_proposals.shape[0]), np.bool_)
+        graph = np.zeros((text_proposals.shape[0], text_proposals.shape[0]), bool)
 
         for index, box in enumerate(text_proposals):
             successions = self.get_successions(index)
@@ -422,7 +421,7 @@ class TextProposalConnectorOriented:
             height = np.mean((text_line_boxes[:, 3] - text_line_boxes[:, 1]))  # 小框平均高度
             text_lines[index, 7] = height + 2.5
 
-        text_recs = np.zeros((len(text_lines), 9), np.float64)
+        text_recs = np.zeros((len(text_lines), 9), float)
         index = 0
         for line in text_lines:
             b1 = line[6] - line[7] / 2  # 根据高度和文本行中心线，求取文本行上下两条线的b值
@@ -465,3 +464,4 @@ class TextProposalConnectorOriented:
             index = index + 1
 
         return text_recs
+

@@ -1,11 +1,10 @@
-# -*- coding:utf-8 -*-
-# '''
+#-*- coding:utf-8 -*-
+#'''
 # Created on 18-12-11 上午10:03
 #
 # @Author: Greg Gao(laygin)
-# '''
+#'''
 import os
-
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 import cv2
 import numpy as np
@@ -13,27 +12,24 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from ctpn_model import CTPN_Model
-from ctpn_utils import gen_anchor, bbox_transfor_inv, clip_box, filter_bbox, nms, TextProposalConnectorOriented
+from ctpn_utils import gen_anchor, bbox_transfor_inv, clip_box, filter_bbox,nms, TextProposalConnectorOriented
 from ctpn_utils import resize
 import config
 
-prob_thresh = 0.1
+
+prob_thresh = 0.2
 width = 612
 device = torch.device('cpu')
-weights = os.path.join(config.checkpoints_dir, 'best1.dict')
-img_path = 'D:/work/files/deeplearn_datasets/OQA/det/train/1AM3_2023-03-09_18.03.52-356_src.png'
+weights = os.path.join(config.checkpoints_dir, 'best.dict')
+img_path = 'D:/work/files/deeplearn_datasets/OQA/det/test.png'
 
-# cc = torch.load('checkpoints/ctpn_ep04_0.0429_0.2026_0.2455.pth.tar')
 model = CTPN_Model()
-best = torch.load(weights, map_location=device)
-model.load_state_dict(best['model_state_dict'])
+model.load_state_dict(torch.load(weights, map_location=device)['model_state_dict'])
 model.to(device)
 model.eval()
 
 
 def dis(image):
-    # dis = cv2.pyrDown(image)
-    # dis = cv2.pyrDown(dis)
     cv2.imshow('image', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -46,9 +42,10 @@ h, w = image.shape[:2]
 image = image.astype(np.float32) - config.IMAGE_MEAN
 image = torch.from_numpy(image.transpose(2, 0, 1)).unsqueeze(0).float()
 
+
 with torch.no_grad():
     image = image.to(device)
-    cls, regr = model(image)  # 预测的输出cls表示当前anchor是字符还是背景，regr为y坐标和高度，宽度固定为16像素，x坐标即为当前anchor坐标
+    cls, regr = model(image)
     cls_prob = F.softmax(cls, dim=-1).cpu().numpy()
     regr = regr.cpu().numpy()
     anchor = gen_anchor((int(h / 16), int(w / 16)), 16)
@@ -67,14 +64,14 @@ with torch.no_grad():
     select_score = select_score[keep_index]
     select_score = np.reshape(select_score, (select_score.shape[0], 1))
     nmsbox = np.hstack((select_anchor, select_score))
-    keep = nms(nmsbox, 0.0)
+    keep = nms(nmsbox, 0.3)
     select_anchor = select_anchor[keep]
     select_score = select_score[keep]
 
     # text line-
     textConn = TextProposalConnectorOriented()
     text = textConn.get_text_lines(select_anchor, select_score, [h, w])
-    print(text)
+    # print(text)
 
     for i in text:
         s = str(round(i[-1] * 100, 2)) + '%'
@@ -83,10 +80,10 @@ with torch.no_grad():
         cv2.line(image_c, (i[0], i[1]), (i[4], i[5]), (0, 0, 255), 2)
         cv2.line(image_c, (i[6], i[7]), (i[2], i[3]), (0, 0, 255), 2)
         cv2.line(image_c, (i[4], i[5]), (i[6], i[7]), (0, 0, 255), 2)
-        cv2.putText(image_c, s, (i[0] + 13, i[1] + 13),
+        cv2.putText(image_c, s, (i[0]+13, i[1]+13),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     1,
-                    (255, 0, 0),
+                    (255,0,0),
                     2,
                     cv2.LINE_AA)
 
