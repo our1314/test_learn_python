@@ -33,7 +33,7 @@ def show_1dim(name, x, width=200):
 
 if __name__ == "__main__":
     #D:\desktop\切割道测试图像
-    files = GetAllFiles("D:/desktop/切割道测试图像")
+    files = GetAllFiles("./_20_proj/koz_test_images")
     for f in files:
         print(f)
         src = cv2.imdecode(np.fromfile(f, np.uint8), cv2.IMREAD_COLOR)
@@ -150,12 +150,12 @@ if __name__ == "__main__":
                 value = y[i]
                 #print(value)
                 if cnt == 0:
-                    if value>0.3:
+                    if value>0.9:
                         cv2.line(roi_src, (0,h), (w,h), (0,0,255))
                         cv2.putText(roi_src,str(round(value,2)),(0,h+cnt*30), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255))
                         cnt += 1 
                 else:
-                    if value>1.5e-1:
+                    if value>0.05:
                         cv2.line(roi_src, (0,h), (w,h), (0,0,255))
                         cv2.putText(roi_src,str(round(value,2)),(0,h+cnt*30), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255))
                         cnt += 1

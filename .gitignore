@@ -6,7 +6,6 @@ run_*/
 #忽略的文件
 *.pt
 *.pth
-*.png
 *.dict
 *.tar
 *.dll
