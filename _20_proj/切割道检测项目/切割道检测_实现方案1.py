@@ -33,7 +33,7 @@ def show_1dim(name, x, width=200):
 
 if __name__ == "__main__":
     #D:\desktop\切割道测试图像
-    files = GetAllFiles("./_20_proj/koz_test_images")
+    files = GetAllFiles("./_20_proj/切割道检测项目/test_images")
     for f in files:
         print(f)
         src = cv2.imdecode(np.fromfile(f, np.uint8), cv2.IMREAD_COLOR)
