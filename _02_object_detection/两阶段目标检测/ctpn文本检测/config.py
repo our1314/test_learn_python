@@ -12,8 +12,7 @@ img_dir = os.path.join(base_dir, 'ocr/JPEGImages')
 xml_dir = os.path.join(base_dir, 'ocr/Annotations')
 
 train_txt_file = os.path.join(base_dir, r'ocr/ImageSets/Main/train.txt')
-val_txt_file = os.path.join(base_dir, r'ocr/ImageSets/Main/val.txt')
-
+val_txt_file = os.path.join(base_dir, r'ocr/ImageSets/Main/val.txt') 
 
 anchor_scale = 16
 IOU_NEGATIVE = 0.3

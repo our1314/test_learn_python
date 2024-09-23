@@ -21,7 +21,7 @@ prob_thresh = 0.2
 width = 612
 device = torch.device('cpu')
 weights = os.path.join(config.checkpoints_dir, 'best.dict')
-img_path = 'D:/work/files/deeplearn_datasets/OQA/det/test.png'
+img_path = './images/ocr/JPEGImages/1AM3_2023-03-09_18.00.34-235_src.png'
 
 model = CTPN_Model()
 model.load_state_dict(torch.load(weights, map_location=device)['model_state_dict'])
@@ -42,11 +42,22 @@ h, w = image.shape[:2]
 image = image.astype(np.float32) - config.IMAGE_MEAN
 image = torch.from_numpy(image.transpose(2, 0, 1)).unsqueeze(0).float()
 
-
 with torch.no_grad():
     image = image.to(device)
     cls, regr = model(image)
-    cls_prob = F.softmax(cls, dim=-1).cpu().numpy()
+    cls_prob = F.softmax(cls, dim=-1).cpu()#.numpy()
+
+    tmp = cls_prob.reshape(1,32,38,10,2)
+    for i in range(10):
+        d = tmp[0,:,:,i,1]
+        d = (d-d.min())/(d.max()-d.min())
+        d = d.numpy()
+        d = cv2.pyrUp(d)
+        d = cv2.pyrUp(d)
+        cv2.imshow("d", d)
+        cv2.waitKey()
+        pass
+    
     regr = regr.cpu().numpy()
     anchor = gen_anchor((int(h / 16), int(w / 16)), 16)
     bbox = bbox_transfor_inv(anchor, regr)
